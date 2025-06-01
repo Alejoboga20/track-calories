@@ -1,15 +1,18 @@
 import {
   Controller,
   Post,
-  Body,
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 
 import { ImageAnalysisService } from './image-analysis.service';
+import { ApiKeyGuard } from 'src/user/guards/api-key.guard';
+import { User } from 'src/user/schemas/user.schema';
 
 const imageFileFilter = (
   _: Express.Request,
@@ -29,7 +32,8 @@ const imageFileFilter = (
 export class ImageAnalysisController {
   constructor(private readonly imageAnalysisService: ImageAnalysisService) {}
 
-  @Post('upload')
+  @UseGuards(ApiKeyGuard)
+  @Post('analyze')
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: imageFileFilter,
@@ -39,7 +43,11 @@ export class ImageAnalysisController {
       storage: memoryStorage(),
     }),
   )
-  uploadImage(@UploadedFile() file: Express.Multer.File) {
+  analyzeImage(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const user = (req as any).user as User;
+    console.log({ user });
+
     return this.imageAnalysisService.processImage(file);
   }
 }
