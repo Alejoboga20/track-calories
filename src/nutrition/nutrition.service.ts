@@ -7,6 +7,7 @@ import { OpenAIService } from '../openai/openai.service';
 import { UserWithId } from '../user/schemas/user.schema';
 import { FoodRepository } from './repositories/food.repository';
 import { GetFoodsDto } from './dtos/get-foods.dto';
+import { GetDailyMacrosDto } from './dtos/get-daily-macros.dto';
 
 @Injectable()
 export class NutritionService {
@@ -52,10 +53,13 @@ export class NutritionService {
     return foods;
   }
 
-  async getDailyMacrosSummary(user: UserWithId, date: Date) {
+  async getDailyMacrosSummary(
+    user: UserWithId,
+    getDailyMacrosDto: GetDailyMacrosDto,
+  ) {
     const dailySummary = await this.foodRepository.calculateDailyMacros(
       user._id,
-      date,
+      getDailyMacrosDto,
     );
 
     return dailySummary;

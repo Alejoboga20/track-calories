@@ -1,7 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-export type FoodEntryDocument = FoodEntry & Document;
+export type FoodEntryDocument = FoodEntry &
+  Document & {
+    createdAt?: Date;
+    updatedAt?: Date;
+  };
 
 @Schema({ collection: 'foods', timestamps: true })
 export class FoodEntry {

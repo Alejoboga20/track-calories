@@ -18,6 +18,7 @@ import {
   AuthenticatedRequest,
 } from 'src/user/guards/api-key.guard';
 import { GetFoodsDto } from './dtos/get-foods.dto';
+import { GetDailyMacrosDto } from './dtos/get-daily-macros.dto';
 
 const imageFileFilter = (
   _: Express.Request,
@@ -72,10 +73,10 @@ export class NutritionController {
   @Get('macros')
   getDailyMacros(
     @Req() req: AuthenticatedRequest,
-    @Query() getFoodsDto: GetFoodsDto,
+    @Query() getDailyMacrosDto: GetDailyMacrosDto,
   ) {
     const user = req.user;
 
-    return this.nutritionService.getDailyMacrosSummary(user, getFoodsDto.date);
+    return this.nutritionService.getDailyMacrosSummary(user, getDailyMacrosDto);
   }
 }

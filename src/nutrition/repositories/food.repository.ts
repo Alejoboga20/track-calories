@@ -6,6 +6,7 @@ import { FoodEntry, FoodEntryDocument } from '../schemas/food-entry.schema';
 import { LogFoodDto } from '../dtos/log-food.dto';
 import { GetFoodsDto } from '../dtos/get-foods.dto';
 import { DailyMacrosSummary } from '../types/macros.interface';
+import { GetDailyMacrosDto } from '../dtos/get-daily-macros.dto';
 
 @Injectable()
 export class FoodRepository {
@@ -14,19 +15,7 @@ export class FoodRepository {
     private readonly foodModel: Model<FoodEntryDocument>,
   ) {}
 
-  async logFood(
-    userId: Types.ObjectId,
-    logFoodDto: LogFoodDto,
-  ): Promise<FoodEntry> {
-    const newFood = this.foodModel.create({ ...logFoodDto, userId });
-
-    return newFood;
-  }
-
-  async findFoods(
-    userId: Types.ObjectId,
-    { date, limit, page }: GetFoodsDto,
-  ): Promise<FoodEntry[]> {
+  private getDateRange(date: Date): { start: Date; end: Date } {
     const start = new Date(
       Date.UTC(
         date.getUTCFullYear(),
@@ -49,6 +38,23 @@ export class FoodRepository {
       ),
     );
 
+    return { start, end };
+  }
+
+  async logFood(
+    userId: Types.ObjectId,
+    logFoodDto: LogFoodDto,
+  ): Promise<FoodEntry> {
+    const newFood = await this.foodModel.create({ ...logFoodDto, userId });
+
+    return newFood;
+  }
+
+  async findFoods(
+    userId: Types.ObjectId,
+    { date, limit, page }: GetFoodsDto,
+  ): Promise<FoodEntry[]> {
+    const { start, end } = this.getDateRange(date);
     const offset = page ? (page - 1) * limit : 0;
 
     const filter: RootFilterQuery<FoodEntry> = {
@@ -66,30 +72,13 @@ export class FoodRepository {
     return foods;
   }
 
-  async calculateDailyMacros(userId: Types.ObjectId, date: Date) {
-    const start = new Date(
-      Date.UTC(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-        0,
-        0,
-        0,
-      ),
-    );
-    const end = new Date(
-      Date.UTC(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-        23,
-        59,
-        59,
-        999,
-      ),
-    );
+  async calculateDailyMacros(
+    userId: Types.ObjectId,
+    { date }: GetDailyMacrosDto,
+  ) {
+    const { start, end } = this.getDateRange(date);
 
-    const result = await this.foodModel
+    const [result] = await this.foodModel
       .aggregate<DailyMacrosSummary>([
         {
           $match: {
