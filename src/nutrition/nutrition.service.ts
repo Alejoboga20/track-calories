@@ -4,19 +4,22 @@ import {
   Logger,
 } from '@nestjs/common';
 import { OpenAIService } from '../openai/openai.service';
-import { User } from '../user/schemas/user.schema';
+import { UserWithId } from '../user/schemas/user.schema';
+import { FoodRepository } from './repositories/food.repository';
 
 @Injectable()
 export class NutritionService {
   private readonly logger = new Logger(NutritionService.name);
 
-  constructor(private readonly openAiService: OpenAIService) {
+  constructor(
+    private readonly openAiService: OpenAIService,
+    private readonly foodRepository: FoodRepository,
+  ) {
     this.logger.log('NutritionService initialized');
   }
 
-  async processImage(imageFile: Express.Multer.File, user: User) {
+  async addMeal(imageFile: Express.Multer.File, user: UserWithId) {
     this.logger.log('Processing file');
-    this.logger.log(`User data: ${JSON.stringify(user)}`);
     const base64Image = imageFile.buffer.toString('base64');
 
     try {
@@ -32,6 +35,8 @@ export class NutritionService {
       if (response.detected === false) {
         return { detected: false, message: 'No meal detected in the image' };
       }
+
+      await this.foodRepository.logFood(user._id, response);
 
       return response;
     } catch (error) {

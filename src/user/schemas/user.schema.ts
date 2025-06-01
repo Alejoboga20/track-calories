@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 import { PhysicalActivity, Objective } from '../enums/user.enums';
 import { Macros } from 'src/nutrition/types/macros.interface';
@@ -42,3 +42,7 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+export interface UserWithId extends User {
+  _id: Types.ObjectId;
+}

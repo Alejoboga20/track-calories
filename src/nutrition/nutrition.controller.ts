@@ -12,7 +12,7 @@ import { memoryStorage } from 'multer';
 
 import { NutritionService } from './nutrition.service';
 import { ApiKeyGuard } from 'src/user/guards/api-key.guard';
-import { User } from 'src/user/schemas/user.schema';
+import { UserWithId } from 'src/user/schemas/user.schema';
 
 const imageFileFilter = (
   _: Express.Request,
@@ -43,10 +43,13 @@ export class NutritionController {
       storage: memoryStorage(),
     }),
   )
-  analyzeImage(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
+  analyzeMealPhoto(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: Request,
+  ) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const user = (req as any).user as User;
+    const user = (req as any).user as UserWithId;
 
-    return this.nutritionService.processImage(file, user);
+    return this.nutritionService.addMeal(file, user);
   }
 }
