@@ -2,6 +2,12 @@
 
 The journey of this project will be documented in this file.
 
+### Trade offs
+
+- Decided to focus on building an API instead of a full-stack application to iterate quickly on the MVP.
+- Decided to use OpenAI for image recognition instead of using more specific or custom models, to save time and leverage existing technology as OpenAI provides robust image recognition capabilities and it's easy to integrate with NestJS.
+- Calculate calories and macros with basic formulas instead of using a more complex model or service, to keep the initial implementation simple and focus on core functionality.
+
 ## 2025-05-31
 
 ### Added
@@ -13,8 +19,14 @@ The journey of this project will be documented in this file.
 - Basic structure for the application with modules, controllers, and services.
 - Basic error handling and logging setup.
 - Connect with OpenAI API for image recognition.
+- Implemented basic image recognition functionality using OpenAI API.
 
-### Trade offs
+## 2025-06-01
 
-- Decided to focus on building an API instead of a full-stack application to iterate quickly on the MVP.
-- Decided to use OpenAI for image recognition instead of using more specific or custom models, to save time and leverage existing technology as OpenAI provides robust image recognition capabilities and it's easy to integrate with NestJS.
+### Added
+
+- Add MongoDB connection using Mongoose.
+- Implement basic user registration using an api key for authentication.
+- Implemented basic user authentication using an API key.
+- Added basic user management functionality.
+- Calculate calories and macros based on user input and save to the database.
