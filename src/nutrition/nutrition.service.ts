@@ -7,11 +7,11 @@ import { OpenAIService } from '../openai/openai.service';
 import { User } from '../user/schemas/user.schema';
 
 @Injectable()
-export class ImageAnalysisService {
-  private readonly logger = new Logger(ImageAnalysisService.name);
+export class NutritionService {
+  private readonly logger = new Logger(NutritionService.name);
 
   constructor(private readonly openAiService: OpenAIService) {
-    this.logger.log('ImageAnalysisService initialized');
+    this.logger.log('NutritionService initialized');
   }
 
   async processImage(imageFile: Express.Multer.File, user: User) {

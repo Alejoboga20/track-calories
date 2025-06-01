@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ImageAnalysisModule } from './image-analysis/image-analysis.module';
+import { NutritionModule } from './nutrition/nutrition.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { envConfigVars } from './config/envs';
@@ -10,7 +10,7 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(envConfigVars.mongoUri),
     UserModule,
-    ImageAnalysisModule,
+    NutritionModule,
   ],
   controllers: [],
   providers: [],

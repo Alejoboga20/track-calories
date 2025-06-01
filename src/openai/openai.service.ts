@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import OpenAI from 'openai';
 import { envConfigVars } from 'src/config/envs';
-import { MealAnalysisResult } from 'src/image-analysis/types/meal-analysis-result.interface';
+import { MealAnalysisResult } from 'src/nutrition/types/meal-analysis-result.interface';
 
 @Injectable()
 export class OpenAIService {

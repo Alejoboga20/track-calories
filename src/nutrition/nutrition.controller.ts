@@ -10,7 +10,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 
-import { ImageAnalysisService } from './image-analysis.service';
+import { NutritionService } from './nutrition.service';
 import { ApiKeyGuard } from 'src/user/guards/api-key.guard';
 import { User } from 'src/user/schemas/user.schema';
 
@@ -28,12 +28,12 @@ const imageFileFilter = (
   callback(null, true);
 };
 
-@Controller('image-analysis')
-export class ImageAnalysisController {
-  constructor(private readonly imageAnalysisService: ImageAnalysisService) {}
+@Controller('nutrition')
+export class NutritionController {
+  constructor(private readonly nutritionService: NutritionService) {}
 
   @UseGuards(ApiKeyGuard)
-  @Post('analyze')
+  @Post('analyze-photo')
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: imageFileFilter,
@@ -47,6 +47,6 @@ export class ImageAnalysisController {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const user = (req as any).user as User;
 
-    return this.imageAnalysisService.processImage(file, user);
+    return this.nutritionService.processImage(file, user);
   }
 }
