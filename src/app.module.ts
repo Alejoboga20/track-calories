@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { ImageAnalysisModule } from './image-analysis/image-analysis.module';
 
 @Module({
-  imports: [],
+  imports: [ImageAnalysisModule],
   controllers: [],
   providers: [],
 })
