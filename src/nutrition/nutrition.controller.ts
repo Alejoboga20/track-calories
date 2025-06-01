@@ -6,13 +6,18 @@ import {
   BadRequestException,
   UseGuards,
   Req,
+  Query,
+  Get,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 
 import { NutritionService } from './nutrition.service';
-import { ApiKeyGuard } from 'src/user/guards/api-key.guard';
-import { UserWithId } from 'src/user/schemas/user.schema';
+import {
+  ApiKeyGuard,
+  AuthenticatedRequest,
+} from 'src/user/guards/api-key.guard';
+import { GetFoodsDto } from './dtos/get-foods.dto';
 
 const imageFileFilter = (
   _: Express.Request,
@@ -45,11 +50,32 @@ export class NutritionController {
   )
   analyzeMealPhoto(
     @UploadedFile() file: Express.Multer.File,
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const user = (req as any).user as UserWithId;
+    const user = req.user;
 
     return this.nutritionService.addMeal(file, user);
+  }
+
+  @UseGuards(ApiKeyGuard)
+  @Get('foods')
+  getFoods(
+    @Req() req: AuthenticatedRequest,
+    @Query() getFoodsDto: GetFoodsDto,
+  ) {
+    const user = req.user;
+
+    return this.nutritionService.getFoods(user, getFoodsDto);
+  }
+
+  @UseGuards(ApiKeyGuard)
+  @Get('macros')
+  getDailyMacros(
+    @Req() req: AuthenticatedRequest,
+    @Query() getFoodsDto: GetFoodsDto,
+  ) {
+    const user = req.user;
+
+    return this.nutritionService.getDailyMacrosSummary(user, getFoodsDto.date);
   }
 }

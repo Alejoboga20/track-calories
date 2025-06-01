@@ -6,6 +6,7 @@ import {
 import { OpenAIService } from '../openai/openai.service';
 import { UserWithId } from '../user/schemas/user.schema';
 import { FoodRepository } from './repositories/food.repository';
+import { GetFoodsDto } from './dtos/get-foods.dto';
 
 @Injectable()
 export class NutritionService {
@@ -43,5 +44,20 @@ export class NutritionService {
       this.logger.error('Error processing image', error);
       throw new InternalServerErrorException('Failed to analyze image');
     }
+  }
+
+  async getFoods(user: UserWithId, getFoodsDto: GetFoodsDto) {
+    const foods = await this.foodRepository.findFoods(user._id, getFoodsDto);
+
+    return foods;
+  }
+
+  async getDailyMacrosSummary(user: UserWithId, date: Date) {
+    const dailySummary = await this.foodRepository.calculateDailyMacros(
+      user._id,
+      date,
+    );
+
+    return dailySummary;
   }
 }
