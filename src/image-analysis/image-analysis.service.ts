@@ -30,7 +30,7 @@ export class ImageAnalysisService {
       if (response.detected === false) {
         return { detected: false, message: 'No meal detected in the image' };
       }
-      /* TODO: Calculate Macros based on formulas, save calcualted calories and compare them with the predicted by GPT */
+
       return response;
     } catch (error) {
       this.logger.error('Error processing image', error);
