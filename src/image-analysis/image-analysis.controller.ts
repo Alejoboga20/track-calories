@@ -46,8 +46,7 @@ export class ImageAnalysisController {
   analyzeImage(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const user = (req as any).user as User;
-    console.log({ user });
 
-    return this.imageAnalysisService.processImage(file);
+    return this.imageAnalysisService.processImage(file, user);
   }
 }

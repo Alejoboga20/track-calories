@@ -4,6 +4,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { OpenAIService } from '../openai/openai.service';
+import { User } from '../user/schemas/user.schema';
 
 @Injectable()
 export class ImageAnalysisService {
@@ -13,8 +14,9 @@ export class ImageAnalysisService {
     this.logger.log('ImageAnalysisService initialized');
   }
 
-  async processImage(imageFile: Express.Multer.File) {
+  async processImage(imageFile: Express.Multer.File, user: User) {
     this.logger.log('Processing file');
+    this.logger.log(`User data: ${JSON.stringify(user)}`);
     const base64Image = imageFile.buffer.toString('base64');
 
     try {

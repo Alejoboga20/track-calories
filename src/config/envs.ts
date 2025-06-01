@@ -31,4 +31,7 @@ const envVars = value as EnvVars;
 export const envConfigVars = {
   openAIApiKey: envVars.OPENAI_API_KEY,
   mongoUri: envVars.MONGO_URI,
+  mongoInitdbRootUsername: envVars.MONGO_INITDB_ROOT_USERNAME,
+  mongoInitdbRootPassword: envVars.MONGO_INITDB_ROOT_PASSWORD,
+  mongoInitdbDatabase: envVars.MONGO_INITDB_DATABASE,
 };

@@ -41,8 +41,8 @@ export class UserService {
 
       return { apiKey: newUser.apiKey };
     } catch (error) {
-      this.logger.error('Error generating API key', error);
-      throw new InternalServerErrorException('Error generating API key');
+      this.logger.error('Error creating user', error);
+      throw new InternalServerErrorException('Error creating user');
     }
   }
 
