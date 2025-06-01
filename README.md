@@ -8,6 +8,10 @@ This project contains a set of APIs built with NestJS with the purpose of implem
 $ npm install
 ```
 
+## Environment variables
+
+Create a `.env` file in the root directory of the project using `env.template` as a template. This file will contain the environment variables required for the application to run.
+
 ## Compile and run the project
 
 ```bash
