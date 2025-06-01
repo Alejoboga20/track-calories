@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserRepository } from './user.repository';
+import { calculateMacros } from 'src/nutrition/utils/nutrition.utils';
 
 @Injectable()
 export class UserService {
@@ -29,11 +30,13 @@ export class UserService {
     }
 
     const apiKey = uuidv4();
+    const macros = calculateMacros({ ...createUserDto });
 
     try {
       const newUser = await this.userRepository.create({
         ...createUserDto,
         apiKey,
+        macros,
       });
 
       return { apiKey: newUser.apiKey };

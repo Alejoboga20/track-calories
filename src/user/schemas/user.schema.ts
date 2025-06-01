@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 import { PhysicalActivity, Objective } from '../enums/user.enums';
+import { Macros } from 'src/nutrition/types/macros.interface';
 
 export type UserDocument = User & Document;
 
@@ -24,6 +25,17 @@ export class User {
 
   @Prop({ required: true, enum: Objective })
   objective: Objective;
+
+  @Prop({
+    required: true,
+    type: {
+      protein: Number,
+      fat: Number,
+      carbs: Number,
+      calories: Number,
+    },
+  })
+  macros: Macros;
 
   @Prop({ required: true, unique: true })
   apiKey: string;
