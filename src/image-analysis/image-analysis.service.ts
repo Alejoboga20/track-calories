@@ -3,13 +3,13 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { OpenAiService } from '../openai/openai.service';
+import { OpenAIService } from '../openai/openai.service';
 
 @Injectable()
 export class ImageAnalysisService {
   private readonly logger = new Logger(ImageAnalysisService.name);
 
-  constructor(private readonly openAiService: OpenAiService) {
+  constructor(private readonly openAiService: OpenAIService) {
     this.logger.log('ImageAnalysisService initialized');
   }
 

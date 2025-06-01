@@ -4,14 +4,14 @@ import { envConfigVars } from 'src/config/envs';
 import { MealAnalysisResult } from 'src/image-analysis/types/meal-analysis-result.interface';
 
 @Injectable()
-export class OpenAiService {
-  private readonly logger = new Logger(OpenAiService.name);
+export class OpenAIService {
+  private readonly logger = new Logger(OpenAIService.name);
   private readonly aiClient = new OpenAI({
-    apiKey: envConfigVars.openAiApiKey,
+    apiKey: envConfigVars.openAIApiKey,
   });
 
   constructor() {
-    this.logger.log('OpenAiService initialized');
+    this.logger.log('OpenAIService initialized');
   }
 
   async analyseImage(base64Image: string) {
@@ -66,8 +66,8 @@ export class OpenAiService {
       const jsonText = rawOutput.match(/```json\n([\s\S]*?)```/)?.[1];
       if (!jsonText) throw new Error('Invalid response format');
 
-      const response = JSON.parse(jsonText) as MealAnalysisResult;
-      return response;
+      const parsedResponse = JSON.parse(jsonText) as MealAnalysisResult;
+      return parsedResponse;
     } catch (error) {
       this.logger.error('Error parsing response', error);
       this.logger.error(`Raw output: ${rawOutput}`);

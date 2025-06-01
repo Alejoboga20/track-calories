@@ -21,5 +21,5 @@ if (error) {
 const envVars = value as EnvVars;
 
 export const envConfigVars = {
-  openAiApiKey: envVars.OPENAI_API_KEY,
+  openAIApiKey: envVars.OPENAI_API_KEY,
 };
