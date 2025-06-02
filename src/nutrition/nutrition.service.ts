@@ -8,6 +8,7 @@ import { UserWithId } from '../user/schemas/user.schema';
 import { FoodRepository } from './repositories/food.repository';
 import { GetFoodsDto } from './dtos/get-foods.dto';
 import { GetDailyMacrosDto } from './dtos/get-daily-macros.dto';
+import { generateNutritionTips } from './utils/generate-nutrition-tip.util';
 
 @Injectable()
 export class NutritionService {
@@ -21,26 +22,46 @@ export class NutritionService {
   }
 
   async addMeal(imageFile: Express.Multer.File, user: UserWithId) {
+    const today = new Date();
     this.logger.log('Processing file');
     const base64Image = imageFile.buffer.toString('base64');
 
     try {
-      const response = await this.openAiService.analyseImage(base64Image);
+      const mealAnalysis = await this.openAiService.analyseImage(base64Image);
 
-      if (!response) {
+      if (!mealAnalysis) {
         this.logger.error('No response from OpenAI service');
         throw new InternalServerErrorException(
           'No response from OpenAI service',
         );
       }
 
-      if (response.detected === false) {
+      if (mealAnalysis.detected === false) {
         return { detected: false, message: 'No meal detected in the image' };
       }
 
-      await this.foodRepository.logFood(user._id, response);
+      const foodEntry = await this.foodRepository.logFood(
+        user._id,
+        mealAnalysis,
+      );
 
-      return response;
+      const dailyMacrosSummary = await this.foodRepository.calculateDailyMacros(
+        user._id,
+        { date: today },
+      );
+
+      const tips = generateNutritionTips(
+        dailyMacrosSummary,
+        user.macros,
+        user.objective,
+      );
+
+      return {
+        message: 'Meal logged successfully',
+        entry: foodEntry,
+        dailyMacrosSummary,
+        tips,
+      };
     } catch (error) {
       this.logger.error('Error processing image', error);
       throw new InternalServerErrorException('Failed to analyze image');

@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserRepository } from './user.repository';
-import { calculateMacros } from 'src/nutrition/utils/nutrition.utils';
+import { calculateMacros } from 'src/nutrition/utils/calculate-macros.util';
 
 @Injectable()
 export class UserService {
