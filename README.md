@@ -39,12 +39,12 @@ App is deployed on `Render` and can be accessed at the following URL: [https://t
 
 - `POST /user`: Register a new user and receive an API key.
 - `POST /nutrition/analyze-photo`: Analyze a photo of a meal to get the nutritional information and log a meal.
-- `POST /nutrition/foods`: Get a list of foods based on a search query.
+- `GET /nutrition/foods`: Get a list of foods based on a search query.
 - `GET /nutrition/macros`: Get your daily calorie intake and macronutrient breakdown.
 
 ## API Documentation
 
-You can access the API documentation at the following URL: [https://track-calories.onrender.com/docs](https://track-calories.onrender.com/api).
+You can access the API documentation at the following URL: [https://track-calories.onrender.com/docs](https://track-calories.onrender.com/docs).
 
 ## Example API Requests
 
