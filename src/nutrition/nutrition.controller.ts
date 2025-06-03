@@ -9,6 +9,15 @@ import {
   Query,
   Get,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 
@@ -34,6 +43,8 @@ const imageFileFilter = (
   callback(null, true);
 };
 
+@ApiTags('nutrition')
+@ApiBearerAuth('api-key')
 @Controller('nutrition')
 export class NutritionController {
   constructor(private readonly nutritionService: NutritionService) {}
@@ -49,6 +60,26 @@ export class NutritionController {
       storage: memoryStorage(),
     }),
   )
+  @ApiOperation({
+    summary: 'Analyze an image of food and log its nutrition data',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'Image file (jpeg, png, gif, webp)',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Returns meal analysis result and logs it to the user journal',
+  })
   analyzeMealPhoto(
     @UploadedFile() file: Express.Multer.File,
     @Req() req: AuthenticatedRequest,
@@ -60,6 +91,19 @@ export class NutritionController {
 
   @UseGuards(ApiKeyGuard)
   @Get('foods')
+  @ApiOperation({ summary: 'Get all logged foods for a given date' })
+  @ApiQuery({
+    name: 'date',
+    type: String,
+    required: true,
+    example: '2025-06-01',
+  })
+  @ApiQuery({ name: 'page', type: Number, required: false, example: 1 })
+  @ApiQuery({ name: 'limit', type: Number, required: false, example: 10 })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns a list of food entries for the user on a given day',
+  })
   getFoods(
     @Req() req: AuthenticatedRequest,
     @Query() getFoodsDto: GetFoodsDto,
@@ -71,6 +115,19 @@ export class NutritionController {
 
   @UseGuards(ApiKeyGuard)
   @Get('macros')
+  @ApiOperation({
+    summary: 'Get daily total macros and calories for a given date',
+  })
+  @ApiQuery({
+    name: 'date',
+    type: String,
+    required: true,
+    example: '2025-06-01',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns total protein, carbs, fat and calories for the date',
+  })
   getDailyMacros(
     @Req() req: AuthenticatedRequest,
     @Query() getDailyMacrosDto: GetDailyMacrosDto,

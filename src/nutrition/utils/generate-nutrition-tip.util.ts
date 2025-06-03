@@ -56,10 +56,7 @@ export const generateNutritionTips = (
     });
   }
 
-  if (
-    objective === Objective.INCREASE &&
-    actual.totalCalories < goal.calories
-  ) {
+  if (objective === Objective.GAIN && actual.totalCalories < goal.calories) {
     tips.push({
       type: 'info',
       message: `You're below your calorie target and your goal is to gain weight. Eat more nutrient-dense foods.`,

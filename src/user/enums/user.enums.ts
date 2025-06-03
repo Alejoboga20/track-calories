@@ -5,7 +5,7 @@ export enum PhysicalActivity {
 }
 
 export enum Objective {
-  INCREASE = 'increase weight',
-  MAINTAIN = 'keep weight',
-  LOSE = 'lose weight',
+  GAIN = 'gain_weight',
+  KEEP = 'keep_weight',
+  LOSE = 'lose_weight',
 }
