@@ -19,7 +19,7 @@ export function calculateMacros({
   const tdee = bmr * activityFactors[physicalActivity];
   let calorieIntake = tdee;
 
-  if (objective === Objective.INCREASE) {
+  if (objective === Objective.GAIN) {
     calorieIntake *= 1.1;
   } else if (objective === Objective.LOSE) {
     calorieIntake *= 0.85;

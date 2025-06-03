@@ -2,6 +2,14 @@
 
 The journey of this project will be documented in this file.
 
+This MVP Project includes the following features:
+
+- User registration with API key.
+- Macro + calorie goals based on user's objective.
+- Image-based food recognition.
+- Food journaling and daily aggregation.
+- Personalized feedback and tips.
+
 ### Trade offs
 
 - Decided to focus on building an API instead of a full-stack application to iterate quickly on the MVP. The API-first approach allows for easier integration with future frontend applications and mobile apps.
@@ -37,3 +45,9 @@ The journey of this project will be documented in this file.
 ### Added
 
 - Implemented basic nutrition tips when tracking a meal.
+
+## 2025-06-03
+
+### Added
+
+- Swagger documentation for the API using `@nestjs/swagger`.
